@@ -13,12 +13,12 @@
 #include <curand_kernel.h>
 #include "cuda_simple_wrapper.h"
 
-#define SUBLIST_COUNT     		30    	// number of generated sublists using splitters; best set to a multiple of SM count	 	
-#define	PARTITION_BLOCK_SIZE	1024	// works well, no need to change it
-#define MERGE_BLOCK_SIZE		128		// works well, no need to change it
+#define SUBLIST_COUNT           30    	// number of generated sublists using splitters; best set to a multiple of SM count	 	
+#define	PARTITION_BLOCK_SIZE    1024    // works well, no need to change it
+#define MERGE_BLOCK_SIZE        128     // works well, no need to change it
 
-#define NUM_BANKS 				32
-#define LOG_NUM_BANKS 			5
+#define NUM_BANKS               32
+#define LOG_NUM_BANKS           5
 #define CONFLICT_FREE_OFFSET(n) ((n) >> LOG_NUM_BANKS) 
 
 __device__ int binary_search_greater_than(double *x, int l, int u, double d) {
@@ -117,9 +117,9 @@ __global__ void generate_splitters(double *E, int k, int spl_size, int *lower_sp
     __shared__ double pivot;
     
     if (threadIdx.x < k) {
-        lower_splitter_copy[threadIdx.x]   = lower_splitter[threadIdx.x];		// we need it multiple times
+        lower_splitter_copy[threadIdx.x]   = lower_splitter[threadIdx.x];       // we need it multiple times
         lower_search_boundary[threadIdx.x] = lower_splitter_copy[threadIdx.x];
-        upper_search_boundary[threadIdx.x] = upper_splitter[threadIdx.x];		// we only need it once
+        upper_search_boundary[threadIdx.x] = upper_splitter[threadIdx.x];       // we only need it once
     }
 
     __syncthreads();
@@ -151,7 +151,7 @@ __global__ void generate_splitters(double *E, int k, int spl_size, int *lower_sp
             first_smaller_than_pivot[threadIdx.x] = 
                 binary_search_smaller_than(E, lower_search_boundary[threadIdx.x], first_greater_than_pivot[threadIdx.x]-1, pivot);
             
-            smaller_count[threadIdx.x] 		 += first_smaller_than_pivot[threadIdx.x] - lower_splitter_copy[threadIdx.x] + 1;
+            smaller_count[threadIdx.x]       += first_smaller_than_pivot[threadIdx.x] - lower_splitter_copy[threadIdx.x] + 1;
             smaller_equal_count[threadIdx.x] += first_greater_than_pivot[threadIdx.x] - lower_splitter_copy[threadIdx.x];
         }
         
@@ -304,9 +304,9 @@ __global__ void gpu_merge(double *E, int k, int *splitters, double *W0, double *
 
                 __syncthreads();
                         
-                int loaded_A = min(blockDim.x, size_A);			// how many did I load from buffer A
-                int loaded_B = min(blockDim.x, size_B);			// how many did I load from buffer B
-                int loaded_shared = loaded_A + loaded_B; 		// loaded in shared memory
+                int loaded_A = min(blockDim.x, size_A);         // how many did I load from buffer A
+                int loaded_B = min(blockDim.x, size_B);         // how many did I load from buffer B
+                int loaded_shared = loaded_A + loaded_B;        // loaded in shared memory
 
                 buff_A += loaded_A;
                 buff_B += loaded_B;
@@ -442,29 +442,29 @@ void cpu_merge(double *A, int k, int *S, double *B) {
 }
     
 int main(int argc, char **argv) {
-    FILE *fS;					// binary file for list sizes
-    FILE *fE;					// binary file for list elements
-    FILE *fR;					// binary file for merged list
+    FILE *fS;                   // binary file for list sizes
+    FILE *fE;                   // binary file for list elements
+    FILE *fR;                   // binary file for merged list
 
-    int k;						// number of lists
-    int n;	 					// number of elements
-    int p = SUBLIST_COUNT;		// number of sublists per list
+    int k;                      // number of lists
+    int n;                      // number of elements
+    int p = SUBLIST_COUNT;      // number of sublists per list
 
-    int 	*hst_S = NULL;		// starting positions of lists
-    double 	*hst_E = NULL;		// elements of lists
-    double  *hst_W = NULL;		// working buffer
+    int     *hst_S = NULL;      // starting positions of lists
+    double 	*hst_E = NULL;      // elements of lists
+    double  *hst_W = NULL;      // working buffer
 
-    double *dev_E  = NULL;		// elements of lists
-    double *dev_W0 = NULL;		// working buffer
-    double *dev_W1 = NULL;		// working buffer
+    double *dev_E  = NULL;      // elements of lists
+    double *dev_W0 = NULL;      // working buffer
+    double *dev_W1 = NULL;      // working buffer
     
-    int	*dev_splitters = NULL;	// splitters
+    int	*dev_splitters = NULL;  // splitters
 
-    double gpu_time1 = 0.0;		// time to generate splitters
-    double gpu_time2 = 0.0;		// time to merge sublists
-    double cpu_time  = 0.0;		// time to merge lists
+    double gpu_time1 = 0.0;     // time to generate splitters
+    double gpu_time2 = 0.0;     // time to merge sublists
+    double cpu_time  = 0.0;     // time to merge lists
     
-    curandState	*state;			// needed for generating random numbers
+    curandState	*state;         // needed for generating random numbers
     
     if (argc != 5) {                                                                 
         fprintf(stderr, "Usage: %s k sizes.dat elements.dat result.dat\n", argv[0]); 
@@ -507,7 +507,7 @@ int main(int argc, char **argv) {
     cuda_exec(cudaMemcpy(dev_E, hst_E, n * sizeof(double), cudaMemcpyHostToDevice));
     
     // initialize starting and ending splitters
-    cuda_exec(cudaMemcpy(dev_splitters, 	hst_S,   k * sizeof(int), cudaMemcpyHostToDevice));
+    cuda_exec(cudaMemcpy(dev_splitters,     hst_S,   k * sizeof(int), cudaMemcpyHostToDevice));
     cuda_exec(cudaMemcpy(dev_splitters+k*p, hst_S+1, k * sizeof(int), cudaMemcpyHostToDevice));
 
     cpu_time -= timer();
@@ -539,8 +539,8 @@ int main(int argc, char **argv) {
     gpu_time2 += timer();
     
     // find the results from CPU and GPU
-    double 	*hst_C;		// result from cpu, merged lists
-    double 	*hst_G;		// result from gpu, merged lists 
+    double 	*hst_C;     // result from cpu, merged lists
+    double 	*hst_G;     // result from gpu, merged lists 
     
     int buffer_switch_count = 0;
     
