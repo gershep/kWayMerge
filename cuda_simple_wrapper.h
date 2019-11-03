@@ -119,7 +119,7 @@ unsigned __ptr_stack_sz = 0;
                                             } while (0)
 
 #define     cuda_exec(func_call)            do {                                                                                        \
-                                                cudaError_t	error = (func_call);                                                        \
+                                                cudaError_t error = (func_call);                                                        \
                                                                                                                                         \
                                                 if (error != cudaSuccess) {                                                             \
                                                     fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, cudaGetErrorString(error));      \
