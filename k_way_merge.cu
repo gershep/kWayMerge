@@ -13,7 +13,7 @@
 #include <curand_kernel.h>
 #include "cuda_simple_wrapper.h"
 
-#define SUBLIST_COUNT           30    	// number of generated sublists using splitters; best set to a multiple of SM count	 	
+#define SUBLIST_COUNT           30    	// number of generated sublists using splitters; best set to a multiple of SM count
 #define	PARTITION_BLOCK_SIZE    1024    // works well, no need to change it
 #define MERGE_BLOCK_SIZE        128     // works well, no need to change it
 
