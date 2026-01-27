@@ -1,9 +1,8 @@
 /* 
 * Parallel k-way merge algorithm for merging k sorted lists with arbitrary sizes.
-* Number of lists is bounded above by 1024, but you can get around this with iterative application
-* of the algorithm. Lists are divided in sublists that can be merged independently. 
-* Sublist are merged iteratively two at a time using a bitonic network.
-* More details: http://algo2.iti.kit.edu/documents/GPUSortingMerging.pdf
+* The number of lists is bounded above by 1024, but you can get around this with iterative application
+* of the algorithm. Lists are divided into sublists that can be merged independently.
+* Sublists are merged iteratively two at a time using a bitonic network.
 */
 
 #include <stdio.h>
