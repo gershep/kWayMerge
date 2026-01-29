@@ -35,7 +35,7 @@ To use this project, you need the following:
 
 ## Usage
 
-The code can be compiled with `nvcc -o k_way_merge k_way_merge.cu` and run with `./k_way_merge k sizes.dat elements.dat results.dat`. `k` is the number of lists and `sizes.dat` and `elements.dat` are binary files containing the list sizes and elements, respectively. The merged list will be saved to `results.dat`.
+The code can be compiled with `nvcc -o k_way_merge k_way_merge.cu` and run with `./k_way_merge k sizes.dat elements.dat results.dat`. `k` is the number of lists, and `sizes.dat` and `elements.dat` are binary files containing the list sizes and elements, respectively. The merged list will be saved to `results.dat`.
 
 ## Performance Comparison
 
@@ -43,7 +43,7 @@ The code can be compiled with `nvcc -o k_way_merge k_way_merge.cu` and run with 
 
 `test.cu` is a helper script that can be compiled with `nvcc -o test test.cu` and run with `./test k max_n`. It generates `k` lists with arbitrary sizes between `1` and `max_n` and saves them on disk.
 
-I generated 1024 lists with sizes of up to 200000. Fo testing, I used Intel Core i5-7300HQ and NVIDIA GeForce GTX 1050 Ti. The CPU merged the lists in about 10 s. The GPU divided the lists in 18 ms and merged the sublists in 769 ms.
+I generated 1024 lists with sizes of up to 200000. For testing, I used Intel Core i5-7300HQ and NVIDIA GeForce GTX 1050 Ti. The CPU merged the lists in about 10 s. The GPU partitioned the lists in 18 ms and merged the sublists in 769 ms.
 
 <img width="1574" height="210" alt="test-results" src="https://github.com/user-attachments/assets/d0248eb5-e419-494b-89b8-bae379afd3ba" />
 
