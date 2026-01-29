@@ -49,4 +49,5 @@ I generated 1024 lists with sizes of up to 200000. Fo testing, I used Intel Core
 
 ## License
 
+This project is licensed under the [MIT License](/LICENSE).
 
