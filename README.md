@@ -30,8 +30,8 @@ Let $T$ be the number of threads in a block. At first, $T$ elements from each su
 
 To use this project, you need the following:
 
-- An NVIDIA GPU that supports CUDA.
-- The NVIDIA CUDA Toolkit.
+- An NVIDIA GPU that supports CUDA
+- The NVIDIA CUDA Toolkit
 
 ## Usage
 
